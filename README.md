@@ -1,2 +1,0 @@
-# news-dashboard
-OS Project

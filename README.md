@@ -2,7 +2,7 @@
 
 <p>Applies producer-consumer model to fetch news data from text files and consumed by the user through dashboard.</p>
 
-<h3>Compiltation:</h3>
+<h3>Compilation:</h3>
 <code>$: make</code>
 <br/>
 <h3>Execution:</h3>

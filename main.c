@@ -5,6 +5,7 @@
 #include <time.h>
 #include <string.h>
 #include <semaphore.h>
+#include <ctype.h>
 
 #define NUM_THREADS 4
 #define BUFFER_SIZE 20 //20 sentences
@@ -181,6 +182,104 @@ void *stocks_thread(void *arg)
     pthread_exit((void *)EXIT_SUCCESS);
 }
 
+
+void printBoxedText(const char* text, int width) {
+    int len = strlen(text);
+    int i = 0;
+
+    while (i < len) {
+        printf("| ");
+
+        int line_chars = 0;
+        int last_space = -1;
+        int j;
+
+        // Find how much we can print
+        for (j = 0; j < width - 4 && (i + j) < len; j++) {
+            char c = text[i + j];
+
+            if (c == '\n') {
+                break;
+            }
+
+            if (isspace(c)) {
+                last_space = j;  // Store the last space position
+            }
+        }
+
+        // Adjust line if word broken at a space
+        int print_len = j;
+        if (j == width - 4 && last_space != -1) {
+            print_len = last_space;  // Break at last space
+        }
+
+        // Print the line (text for this line)
+        for (int k = 0; k < print_len; k++) {
+            printf("%c", text[i + k]);
+            line_chars++;
+        }
+
+        // Fill spaces to the right if the line is shorter than width
+        for (int k = line_chars; k < width - 4; k++) {
+            printf(" ");
+        }
+
+        printf(" |\n");
+
+        // Move i to next part for the next line
+        i += print_len;
+
+        // Skip leading spaces or newlines after wrapping
+        while (i < len && (isspace(text[i]) || text[i] == '\n')) {
+            i++;
+        }
+    }
+}
+
+ void starting() {
+
+    system("clear");
+    char* spacing = "                                                                                ";
+    char* dash = "--------------------------------------------------------------------------------";
+
+    printf("\n\n\n\n\n");
+    printf("%.*s %s", 40, spacing, "Multi-Threaded News Dashboard");
+    fflush(stdout); // <--- force to show text immediately
+
+    for(int i = 0; i < 3; i++) {
+        printf(".");
+        sleep(1);
+        fflush(stdout); // <--- also flush after each dot
+    }
+
+    sleep(1);
+    system("clear");
+
+    printf("%.*s |%.*s|\n", 10, spacing, 70, dash);
+    printf("%.*s | %55s %.*s|\n", 10, spacing, "Welcome to the Multi-Threaded News Dashboard", 13, spacing);
+    printf("%.*s |%.*s|\n", 10, spacing, 70, dash);
+
+
+    printf("%.*s |%.*s|\n", 10, spacing, 70, spacing);
+    // printf("\n");
+    printf("%.*s | %-68s |\n", 10, spacing, "Stay informed with real-time updates from around the world!");
+    
+    printf("%.*s |%.*s|\n", 10, spacing, 70, spacing);
+    printf("%.*s | %-40s %.*s|\n", 10, spacing, "-Latest News Headlines", 28, spacing);
+    printf("%.*s | %-40s %.*s|\n", 10, spacing, "-Live Sports Updates", 28, spacing);
+    printf("%.*s | %-40s %.*s|\n", 10, spacing, "-Cryptocurrency Market Updates", 28, spacing);
+    printf("%.*s | %-40s %.*s|\n", 10, spacing, "-Stock Market Trends", 28, spacing);
+
+    printf("%.*s |%.*s|\n", 10, spacing, 70, spacing);
+    printf("%.*s | %-68s |\n", 10, spacing, "Your personalized dashboard, powered by multi-threading, ensures you");
+    printf("%.*s | %-70s |\n", 10, spacing, "never miss a moment — everything delivered fast and smoothly.");
+    printf("%.*s |%.*s|\n", 10, spacing, 70, dash);
+
+    printf("\nPress Enter to continue...");
+    getchar();
+    
+}
+
 int main()
 {   
     srand(time(NULL));
@@ -224,6 +323,11 @@ int main()
     char current_sports[SENTENCE_SIZE];
     char current_crypto[SENTENCE_SIZE];
     char current_stocks[SENTENCE_SIZE];
+
+    starting();
+
+    char* spacing = "                                                                                ";
+    char* dash = "--------------------------------------------------------------------------------";
 
     do {
 
@@ -326,7 +430,18 @@ int main()
         //check if user wants to exit the program
         if(choice == 6){
             running = 0; //change the program's running state to 0 so that threads can terminate
-            printf("\nExiting...\n");
+            system("clear");
+            printf("\n\n\n\n\n");
+            printf("%.*s |%.*s|\n", 10, spacing, 70, dash);
+            printf("%.*s | %50s %.*s|\n", 10, spacing, "Multi-Threaded News Dashboard", 18, spacing);
+            printf("%.*s |%.*s|\n", 10, spacing, 70, dash);
+            printf("%.*s %s",10, spacing,"Exiting...");
+            for(int i = 0; i < 3; i++) {
+                printf(".");
+                sleep(1);
+                fflush(stdout); // <--- also flush after each dot
+            }
+            printf("\n");
             pthread_cancel(newsT);
             pthread_cancel(sportsT);
             pthread_cancel(cryptoT);
@@ -336,17 +451,54 @@ int main()
 
         system("clear");
 
-        printf("\n====== DASHBOARD ======\n");
-        printf("News   : %s\n", current_news);
-        printf("Sports : %s\n", current_sports);
-        printf("Crypto : %s\n", current_crypto);
-        printf("Stocks : %s\n", current_stocks);
+        printf("|%.*s|\n", 80, dash);
+        printf("| %40s %.*s|\n", "*DASHBOARD*", 38, spacing);
+        printf("|%.*s|\n", 80, dash);
 
-        printf("\nPress 1 to update News\nPress 2 to update Sports\nPress 3 to update Crypto\nPress 4 to update Stocks\nPress 5 to update All\nPress 6 to exit: ");
+        printf("| %38s %.*s|\n", "--NEWS--", 40, spacing);
+        printBoxedText(current_news, 82);
+        printf("|%.*s|\n", 80, dash);
+
+        printf("| %39s %.*s|\n", "--SPORTS--", 39, spacing);
+        printBoxedText(current_sports, 82);
+        printf("|%.*s|\n", 80, dash);
+
+        printf("| %39s %.*s|\n", "--CRYPTO--", 39, spacing);
+        printBoxedText(current_crypto, 82);
+        printf("|%.*s|\n", 80, dash);
+
+        printf("| %39s %.*s|\n", "--STOCKS--", 39, spacing);
+        printBoxedText(current_stocks, 82);
+        printf("|%.*s|\n", 80, dash);
+
+        printf("\n\n");
+
+        printf("|%.*s|\n", 40, dash);
+        printf("| %20s %.*s|\n", "MENU", 18, spacing);
+        printf("|%.*s|\n", 40, dash);
+
+        printf("| %-38s |", "Press 1 to update News");
+        printf("\n");
+        printf("| %-38s |", "Press 2 to update Sports");
+        printf("\n");
+        printf("| %-38s |", "Press 3 to update Crypto");
+        printf("\n");
+        printf("| %-38s |", "Press 4 to update Stocks");
+        printf("\n");
+        printf("| %-38s |", "Press 5 to update All");
+        printf("\n");
+        printf("| %-38s |", "Press 6 to Exit");
+        printf("\n");
+
+        printf("|%.*s|\n", 40, dash);
+
+        
+        printf("\nYour Choice: ");
         scanf("%d", &choice);
     
     }while(1);
 
+    
 
     
     //cleaning up threads, mutexes and semaphores

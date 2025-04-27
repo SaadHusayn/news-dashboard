@@ -1,5 +1,25 @@
-curl --request POST         --url https://newsnow.p.rapidapi.com/newsv2_top_news    --header 'Content-Type: application/json'      --header 'x-rapidapi-host: newsnow.p.rapidapi.com'      --header 'x-rapidapi-key: c2c16921c6msh39bc05f1b3c6298p10244ajsnc0f7a3a1b73e'  --data '{"location":"us","language":"en","page":1,"time_bounded":false,"from_date":"01/02/2021","to_date":"05/06/2021"}' | jq -r '.news[].text' > news.txt
+curl "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyDSdd3ifQB0lBfsQVgqtiDSc6CiP57PDZM" -H 'Content-Type: application/json' -X POST -d '{
+  "contents": [{
+    "parts":[{"text": "generate 60 sentences about current world news and write them line by line in plaintext and dont add numbering to the sentences. Each news sentence should be different in terms of content and shouldnot be too generic. Dont generate intro and outro text, just generate sentences, else no content"}]
+    }]
+   }' | jq -r '.candidates[0].content.parts[0].text' > news.txt
 
-curl --request POST         --url https://newsnow.p.rapidapi.com/newsv2_top_news    --header 'Content-Type: application/json'      --header 'x-rapidapi-host: newsnow.p.rapidapi.com'      --header 'x-rapidapi-key: c2c16921c6msh39bc05f1b3c6298p10244ajsnc0f7a3a1b73e'  --data '{"location":"us","language":"en","page":2,"time_bounded":false,"from_date":"01/02/2021","to_date":"05/06/2021"}' | jq -r '.news[].text' >> news.txt
 
-curl --request POST         --url https://newsnow.p.rapidapi.com/newsv2_top_news    --header 'Content-Type: application/json'      --header 'x-rapidapi-host: newsnow.p.rapidapi.com'      --header 'x-rapidapi-key: c2c16921c6msh39bc05f1b3c6298p10244ajsnc0f7a3a1b73e'  --data '{"location":"us","language":"en","page":3,"time_bounded":false,"from_date":"01/02/2021","to_date":"05/06/2021"}' | jq -r '.news[].text' >> news.txt
+curl "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyDSdd3ifQB0lBfsQVgqtiDSc6CiP57PDZM" -H 'Content-Type: application/json' -X POST -d '{
+  "contents": [{
+    "parts":[{"text": "generate 60 sentences about current sports updates and write them line by line in plaintext and dont add numbering to the sentences. Each sports update sentence should be different in terms of content and shouldnot be too generic. Dont generate intro and outro text, just generate sentences, else no content"}]
+    }]
+   }' | jq -r '.candidates[0].content.parts[0].text' > sports.txt
+
+curl "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyDSdd3ifQB0lBfsQVgqtiDSc6CiP57PDZM" -H 'Content-Type: application/json' -X POST -d '{
+  "contents": [{
+    "parts":[{"text": "generate 60 sentences about current stocks updates and write them line by line in plaintext and dont add numbering to the sentences. Each stocks update sentence should be different in terms of content and shouldnot be too generic. Dont generate intro and outro text, just generate sentences, else no content"}]
+    }]
+   }' | jq -r '.candidates[0].content.parts[0].text' > stocks.txt
+
+curl "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyDSdd3ifQB0lBfsQVgqtiDSc6CiP57PDZM" -H 'Content-Type: application/json' -X POST -d '{
+  "contents": [{
+    "parts":[{"text": "generate 60 sentences about current crypto updates and write them line by line in plaintext and dont add numbering to the sentences. Each crypto update sentence should be different in terms of content and shouldnot be too generic. Dont generate intro and outro text, just generate sentences, else no content"}]
+    }]
+   }' | jq -r '.candidates[0].content.parts[0].text' > crypto.txt
+
